@@ -59,6 +59,7 @@ def scrape_jobs(driver, job_urls):
             location = driver.find_elements_by_class_name('left')[0]
             jobdict['Location'] = location.find_elements_by_tag_name('span')[1].text.encode("utf-8")
             job_list.append(jobdict)
+            # append_to_csv(jobdict)
         except:
             print('error')
             continue
@@ -71,5 +72,12 @@ def export_to_csv(job_list):
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(job_list)
+
+
+def append_to_csv(jobdict):
+    keys = jobdict.keys()
+    with open('gs_jobs.csv', 'a') as f:
+        writer = csv.DictWriter(f, fieldnames=keys)
+        writer.writerow(jobdict)
 
 scrape()
